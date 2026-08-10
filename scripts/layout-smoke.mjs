@@ -1,0 +1,13 @@
+import { chromium } from 'playwright-core';
+const browser = await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+const page = await browser.newPage({viewport:{width:1536,height:1000}});
+await page.goto('http://127.0.0.1:4173',{waitUntil:'networkidle'});
+const desktopOverflow = await page.locator('.metric').evaluateAll(nodes => nodes.map(n => ({scroll:n.scrollWidth,client:n.clientWidth})).filter(x => x.scroll > x.client + 1));
+if (desktopOverflow.length) throw new Error('Desktop metric overflow '+JSON.stringify(desktopOverflow));
+await page.setViewportSize({width:390,height:844});
+await page.reload({waitUntil:'networkidle'});
+const mobile = await page.evaluate(() => ({body:document.body.scrollWidth,viewport:window.innerWidth,price:!!document.querySelector('.mobile-price-summary'),reasons:getComputedStyle(document.querySelector('.verdict-reasons')).borderStyle,nav:[...document.querySelectorAll('.toolbar-actions button')].filter(x=>getComputedStyle(x).display!=='none').length}));
+if (mobile.body > mobile.viewport + 1) throw new Error('Mobile horizontal overflow '+JSON.stringify(mobile));
+if (!mobile.price || mobile.nav !== 2) throw new Error('Mobile composition '+JSON.stringify(mobile));
+console.log(JSON.stringify({desktopMetricOverflow:desktopOverflow,mobile},null,2));
+await browser.close();
