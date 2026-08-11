@@ -55,3 +55,10 @@ Asset::getInstance()->addJs('/local/assets/apgs-card/apgs-product-card.js');
 - API аналогов;
 - серверная отправка КП;
 - production PDF/XLSX, если экспорт должен формироваться backend.
+## Системные состояния
+
+Состояние можно передать через `data-edge-state` контейнера или через `edgeState` в `mount`. Поддерживаются: `no-context`, `no-curve`, `insufficient-data`, `api-error`. Для кнопки повторной загрузки передаётся callback `onRetry`.
+
+```php
+<div id="apgs-product-card" data-mode="embedded" data-edge-state="no-curve"></div>
+```

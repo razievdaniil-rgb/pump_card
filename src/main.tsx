@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
-import type { MountOptions } from './domain/types';
+import type { EdgeState, MountOptions } from './domain/types';
 import { pumpProduct } from './domain/mockProduct';
 import { mapBitrixPump, type BitrixProductPayload } from './services/bitrixProductAdapter';
 import './styles/tokens.css';
@@ -27,8 +27,11 @@ window.APGSProductCard = { mount: mountApGsProductCard };
 const standaloneRoot = document.getElementById('root') ?? document.getElementById('apgs-product-card');
 if (standaloneRoot) {
   const mode = standaloneRoot.dataset.mode === 'embedded' ? 'embedded' : 'standalone';
+  const queryEdgeState = new URLSearchParams(window.location.search).get('edgeState');
+  const edgeState = (standaloneRoot.dataset.edgeState || queryEdgeState || null) as EdgeState;
   mountApGsProductCard(standaloneRoot, {
     mode,
+    edgeState,
     xmlId: standaloneRoot.dataset.xmlId,
     product: window.APGS_PRODUCT_DATA ?? (window.APGS_BITRIX_PRODUCT ? mapBitrixPump(window.APGS_BITRIX_PRODUCT, pumpProduct) : undefined),
   });

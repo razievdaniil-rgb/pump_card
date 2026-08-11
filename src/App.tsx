@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { AlternativesCard } from './components/AlternativesCard';
 import { ContextBar } from './components/ContextBar';
 import { DiagnosticsPanel } from './components/DiagnosticsPanel';
-import { EdgeStateNotice, type EdgeState } from './components/EdgeStateNotice';
+import { EdgeStateNotice } from './components/EdgeStateNotice';
 import { MetricsBar } from './components/MetricsBar';
 import { ProductTabs } from './components/ProductTabs';
 import { PurchaseRail } from './components/PurchaseRail';
@@ -26,7 +26,6 @@ export function App({ options = {} }: { options?: MountOptions }) {
   const [editOpen, setEditOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const [compared, setCompared] = useState(false);
-  const [edgeState] = useState<EdgeState>(null);
   const items = useSpecificationStore((state) => state.items);
   const openSpecification = useSpecificationStore((state) => state.open);
   const verdict = useMemo(() => calculateVerdict(product, context), [product, context]);
@@ -39,7 +38,7 @@ export function App({ options = {} }: { options?: MountOptions }) {
 
   return <div className={`apgs-app apgs-app--${options.mode ?? 'standalone'}`} data-xml-id={options.xmlId ?? product.xmlId}>
     <header className="app-toolbar"><div className="breadcrumbs">Каталог / Насосы / InLine / <b>{product.name}</b></div><div className="toolbar-actions"><button onClick={() => options.onOpenSelector?.(context)}><ArrowLeft size={16} /><span className="desktop-label">В подборщик</span><span className="mobile-label">Назад</span></button><button className={compared ? 'is-active' : ''} onClick={() => setCompared((value) => !value)}><GitCompareArrows size={16} />{compared ? 'В сравнении' : 'Сравнить'}</button><button onClick={openSpecification}><Box size={16} />Спецификация <b>{items.reduce((sum, item) => sum + item.quantity, 0)}</b></button></div></header>
-    <EdgeStateNotice state={edgeState} />
+    <EdgeStateNotice state={options.edgeState ?? null} onRetry={options.onRetry} />
     <main className="product-layout">
       <div className="product-main">
         <section className="product-card">

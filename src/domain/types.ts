@@ -1,5 +1,6 @@
 export type VerdictLevel = 'A' | 'B' | 'C';
 export type DiagnosticStatus = 'ok' | 'warn' | 'danger';
+export type EdgeState = 'no-context' | 'no-curve' | 'insufficient-data' | 'api-error' | null;
 export type PumpCurveType = 'QH' | 'EFF' | 'POWER' | 'NPSH';
 
 export interface DutyPoint {
@@ -93,8 +94,10 @@ export interface MountOptions {
   context?: DutyPoint;
   mode?: 'standalone' | 'embedded';
   xmlId?: string;
+  edgeState?: EdgeState;
   onQuoteSubmit?: (payload: QuotePayload) => Promise<void> | void;
   onOpenSelector?: (context: DutyPoint) => void;
+  onRetry?: () => void;
 }
 
 export interface QuotePayload {

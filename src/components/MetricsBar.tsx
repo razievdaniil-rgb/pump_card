@@ -11,9 +11,9 @@ export function MetricsBar({ product, context }: { product: PumpProduct; context
     { label: 'Расход (Q)', value: `${context.q.toFixed(1)} м³/ч`, helper: 'ном. 32,0', icon: Droplet },
     { label: 'Напор (H)', value: `${context.h.toFixed(1)} м`, helper: '+1% к расчёту', icon: MoveUp },
     { label: 'Мощность', value: `${product.powerKw.toFixed(1)} кВт`, helper: `${product.voltage} В · IE3`, icon: Zap },
-    { label: 'DN / PN', value: `DN${product.dn} / PN${product.pn}`, helper: 'фланец EN 1092', icon: FlangeIcon },
+    { label: 'DN / PN', value: `DN${product.dn} / PN${product.pn}`, helper: 'фланец EN 1092', icon: FlangeIcon, compact: true },
     { label: 'КПД (раб. точка)', value: `${product.efficiency.toFixed(1)} %`, helper: 'классификация IE3', icon: Gauge },
     { label: 'NPSHa', value: '+1,2 м', helper: 'запас', icon: Droplet },
   ];
-  return <section className="metrics-bar" aria-label="Ключевые характеристики">{metrics.map(({ label, value, helper, icon: Icon }) => <div className="metric" key={label}><span className="metric__icon"><Icon width={22} height={22} /></span><div><span className="metric__label">{label}</span><strong>{value}</strong><small>{helper}</small></div></div>)}</section>;
+  return <section className="metrics-bar" aria-label="Ключевые характеристики">{metrics.map(({ label, value, helper, icon: Icon, compact }) => <div className={`metric${compact ? ' metric--compact' : ''}`} key={label}><span className="metric__icon"><Icon width={22} height={22} /></span><div><span className="metric__label">{label}</span><strong>{value}</strong><small>{helper}</small></div></div>)}</section>;
 }
