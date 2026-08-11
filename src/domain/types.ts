@@ -1,5 +1,6 @@
 export type VerdictLevel = 'A' | 'B' | 'C';
 export type DiagnosticStatus = 'ok' | 'warn' | 'danger';
+export type PumpCurveType = 'QH' | 'EFF' | 'POWER' | 'NPSH';
 
 export interface DutyPoint {
   q: number;
@@ -14,8 +15,32 @@ export interface PumpCurvePoint {
   efficiency: number;
 }
 
+export interface EngineeringCurvePoint {
+  q: number;
+  h?: number;
+  eff?: number;
+  power?: number;
+  npsh?: number;
+}
+
+export interface EngineeringCurve {
+  curve_id: string;
+  product_id: string;
+  curve_type: PumpCurveType;
+  units: {
+    x: 'm3/h';
+    y: 'm' | '%' | 'kW';
+  };
+  variant?: {
+    rpm?: number | null;
+    impeller_diameter_mm?: number | null;
+  };
+  points: EngineeringCurvePoint[];
+}
+
 export interface PumpProduct {
   id: string;
+  xmlId: string;
   sku: string;
   version: string;
   name: string;
@@ -32,6 +57,8 @@ export interface PumpProduct {
   price: number;
   stock: number;
   delivery: string;
+  curveIds: string[];
+  curves: EngineeringCurve[];
   curve: PumpCurvePoint[];
   description: string;
 }
@@ -64,6 +91,8 @@ export interface SpecificationItem {
 export interface MountOptions {
   product?: PumpProduct;
   context?: DutyPoint;
+  mode?: 'standalone' | 'embedded';
+  xmlId?: string;
   onQuoteSubmit?: (payload: QuotePayload) => Promise<void> | void;
   onOpenSelector?: (context: DutyPoint) => void;
 }
