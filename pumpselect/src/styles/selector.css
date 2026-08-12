@@ -111,3 +111,6 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .dn-pn-pair>.form-field>span{display:block!important;min-height:36px!important;line-height:1.35}
 .dn-pn-pair>.form-field>.input-shell{margin-top:0!important;height:38px!important;min-width:0}
 @media(max-width:360px){.dn-pn-pair{grid-template-columns:1fr!important}.dn-pn-pair>.form-field{grid-template-rows:auto 38px!important}.dn-pn-pair>.form-field>span{min-height:0!important}}
+
+.toast{pointer-events:none}.toast button{pointer-events:auto}
+
